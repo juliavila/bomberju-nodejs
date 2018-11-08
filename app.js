@@ -1,37 +1,24 @@
-var path = require('path');
 
-//meus
 let express = require('express');
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var gameRouter = require('./routes/game');
-
 var app = express();
 
-app.use(express.static(path.join(__dirname, 'public')));
+var indexRouter = require('./routes/index');
+
+var controller = require('./controllers/game.controller');
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/game', gameRouter);
 
-io.on('connection', (socket) => {
-  console.log('user connected');
+http.listen(4000, () => console.log('started on port 4000'));
 
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
+// socket.io
 
-  socket.on('message', (message) => {
-    console.log("Message Received: " + message);
-    io.emit('message', {type:'new-message', text: message});    
-  });
-});
+app.listen(3000, () => console.log('started on port 3000'));
 
-http.listen(4000, () => {
-  console.log('started on port 4000');
+io.sockets.on('connection', socket => {
+  controller.game(socket, io);
 });
 
 module.exports = app;
