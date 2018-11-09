@@ -5,9 +5,9 @@ let io = require('socket.io')(http);
 
 var app = express();
 
-var indexRouter = require('./routes/index');
+var indexRouter = require('./routes/game');
 
-var controller = require('./controllers/game.controller');
+var gameController = require('./controllers/game.controller');
 
 app.use('/', indexRouter);
 
@@ -18,7 +18,7 @@ http.listen(4000, () => console.log('started on port 4000'));
 app.listen(3000, () => console.log('started on port 3000'));
 
 io.sockets.on('connection', socket => {
-  controller.game(socket, io);
+  gameController.game(socket, io);
 });
 
 module.exports = app;

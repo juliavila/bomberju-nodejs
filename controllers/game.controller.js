@@ -1,4 +1,4 @@
-module.exports.game = function (socket, io) {
+module.exports.game = (socket, io) => {
 	console.log('user connected');
 
 	socket.on('disconnect', () => console.log('user disconnected'));
