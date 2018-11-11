@@ -10,7 +10,8 @@ router.get( '/enterRoom', (req, res, next) => {
   let room = roomController.enterRoom();
 
   res.json({
-    'roomId': room.id
+    'roomId': room.id,
+    'playerIndex': room.totalPlayers
   });    
 
 });
