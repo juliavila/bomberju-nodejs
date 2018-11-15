@@ -6,21 +6,15 @@ var roomController = require('./../controllers/room.controller');
 router.get( '/', (req, res, next) => {});
 
 router.get( '/enterRoom', (req, res, next) => {
-
+  
   let room = roomController.enterRoom();
-
+  
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
   res.json({
     'roomId': room.id,
-    'playerIndex': room.totalPlayers
+    'playerId': room.totalPlayers
   });    
 
 });
-
-// router.get( '/batata', (req, res, next) =>{
-//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
-//   res.json({
-//     'batata': 'batata'
-//   });
-// });
 
 module.exports = router;
