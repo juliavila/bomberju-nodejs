@@ -7,24 +7,30 @@ module.exports.game = (socket, io) => {
 
 	socket.on('message', message => {
 
-    if (message.type === 'WIN') 
-      roomController.deleteRoom(message.room.roomId)
+    console.log(message)
+    data = JSON.parse(message);
+    
+    if (data.type === 'READY') {
+      console.log('is ready')
+      let rooms = roomController.getReadyRooms();
+      console.log(rooms);
+      if (rooms) {
+        rooms.forEach(room => {
+          let newMessage = JSON.stringify({
+            room: room,
+            type: 'START'
+          });
+          console.log('newMessage', newMessage);
+          io.emit('message', { type: 'new-message', text: newMessage })
+        });
+      }
+    } else {
 
-		io.emit('message', { type: 'new-message', text: message })
+      if (data.type === 'WIN') {
+        roomController.deleteRoom(data.room.roomId)
+      }
+      
+      io.emit('message', { type: 'new-message', text: message })
+    }    
   });
-
-  socket.on('ready', () => {
-    let rooms = roomController.getRoomsReady();
-    console.log(rooms);
-    if (rooms) {
-      rooms.forEach(room => {
-        let message = {
-          room: room,
-          type: 'START'
-        }
-        io.emit('message', { type: 'new-message', text: message })
-      });
-    }
-  })
-  
 }

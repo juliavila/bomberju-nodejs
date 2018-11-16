@@ -10,7 +10,7 @@ let maxPlayer = 2;
 //   START = 'START'
 // }
 
-findRoom = () => {
+findFreeRoom = () => {
   let room = rooms.find(room => room.totalPlayers < maxPlayer);
   return room;
 },
@@ -29,7 +29,7 @@ generateId = () => `${Date.now()}${Math.floor(Math.random() * Math.floor(1000))}
 
 module.exports.enterRoom = () => {
 
-  let room = findRoom();
+  let room = findFreeRoom();
   
   if (room) room.totalPlayers++;
   else room = createRoom();
@@ -40,12 +40,22 @@ module.exports.enterRoom = () => {
 
 }
 
-module.exports.getRoomsReady = () => {
-  return rooms.find(room => {
-    let start = room.start
+module.exports.findRoom = (roomId) => {
+  let room = rooms.find(room => room.roomId === roomId);
+  return room;
+}
+
+module.exports.roomIsReady = (roomId) => {
+  let room = module.exports.findRoom(roomId);
+  return room && room.totalPlayers === maxPlayer;
+}
+
+module.exports.getReadyRooms = () => {
+  return rooms.filter(room => {
+    let ready = room.totalPlayers === maxPlayer && room.start;
     room.start = false;
-    return start;
-  });
+    return ready;
+  })
 }
 
 module.exports.deleteRoom = (roomId) => {
