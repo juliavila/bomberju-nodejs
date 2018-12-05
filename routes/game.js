@@ -9,7 +9,7 @@ router.get( '/enterRoom', (req, res, next) => {
   
   let room = roomController.enterRoom();
   
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.json({
     'roomId': room.id,
     'playerId': room.totalPlayers

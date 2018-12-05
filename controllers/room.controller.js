@@ -35,9 +35,9 @@ module.exports.enterRoom = () => {
   else room = createRoom();
 
   room.start = room.totalPlayers === maxPlayer;
-
+    
   return room;
-
+  
 }
 
 module.exports.findRoom = (roomId) => {
